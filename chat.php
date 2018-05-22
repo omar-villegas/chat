@@ -41,12 +41,18 @@ function chatHeartbeat() {
 	$query = mysqli_query(mysqli_connect("localhost", "root", "", "chat"),$sql);
 	$items = '';
 
-	var_dump($query);
-
 	$chatBoxes = array();
 
-	while ($chat = mysql_fetch_array($query)) {
+	$conexion = new PDO('mysql:host=localhost;dbname=chat', 'root','');
+    $acentos = $conexion->query("SET NAMES 'utf8'"); // Permitir caracteres especiales
 
+    // Lista de voluntarios para filtro de select
+    $sql = $conexion->prepare('select * from chat where (chat.to = "General") AND recd != 1 order by id ASC');
+    $sql->execute();
+    $query = $sql->fetchAll();
+
+	foreach($query AS $chat) {
+		
 		if (!isset($_SESSION['openChatBoxes'][$chat['from']]) && isset($_SESSION['chatHistory'][$chat['from']])) {
 			
 		}

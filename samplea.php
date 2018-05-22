@@ -1,7 +1,6 @@
 <?php
 session_start();
 $_SESSION['username'] = "omar"; // Must be already set
-require("chat.php");
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/loose.dtd" >

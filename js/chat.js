@@ -142,7 +142,7 @@ function createChatBox(chatboxtitle,minimizeChatBox) {
 
 function chatHeartbeat(){
 
-	window.alert("hola");
+	//window.alert("hola");
 	var itemsfound = 0;
 	
 	if (windowFocus == false) {
@@ -183,39 +183,39 @@ function chatHeartbeat(){
 	}
 	
 	$.ajax({
-	  url: "chat.php?action=chatheartbeat",
-	  cache: false,
-	  dataType: "json",
-	  success: function(data) {
+		url: "chat.php?action=chatheartbeat",
+		cache: false,
+		dataType: "json",
+		success: function(data) {
 
-		$.each(data.items, function(i,item){
-			if (item)	{ // fix strange ie bug
+			$.each(data.items, function(i,item){
+				if (item)	{ // fix strange ie bug
 
-				chatboxtitle = item.f;
+					chatboxtitle = item.f;
 
-				if ($("#chatbox_"+chatboxtitle).length <= 0) {
-					createChatBox(chatboxtitle);
+					if ($("#chatbox_"+chatboxtitle).length <= 0) {
+						createChatBox(chatboxtitle);
+					}
+					if ($("#chatbox_"+chatboxtitle).css('display') == 'none') {
+						$("#chatbox_"+chatboxtitle).css('display','block');
+						restructureChatBoxes();
+					}
+					
+					if (item.s == 1) {
+						item.f = username;
+					}
+
+					if (item.s == 2) {
+						$("#chatbox_"+chatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxinfo">'+item.m+'</span></div>');
+					} else {
+						newMessages[chatboxtitle] = true;
+						newMessagesWin[chatboxtitle] = true;
+						$("#chatbox_"+chatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+item.f+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+item.m+'</span></div>');
+					}
+
+					$("#chatbox_"+chatboxtitle+" .chatboxcontent").scrollTop($("#chatbox_"+chatboxtitle+" .chatboxcontent")[0].scrollHeight);
+					itemsfound += 1;
 				}
-				if ($("#chatbox_"+chatboxtitle).css('display') == 'none') {
-					$("#chatbox_"+chatboxtitle).css('display','block');
-					restructureChatBoxes();
-				}
-				
-				if (item.s == 1) {
-					item.f = username;
-				}
-
-				if (item.s == 2) {
-					$("#chatbox_"+chatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxinfo">'+item.m+'</span></div>');
-				} else {
-					newMessages[chatboxtitle] = true;
-					newMessagesWin[chatboxtitle] = true;
-					$("#chatbox_"+chatboxtitle+" .chatboxcontent").append('<div class="chatboxmessage"><span class="chatboxmessagefrom">'+item.f+':&nbsp;&nbsp;</span><span class="chatboxmessagecontent">'+item.m+'</span></div>');
-				}
-
-				$("#chatbox_"+chatboxtitle+" .chatboxcontent").scrollTop($("#chatbox_"+chatboxtitle+" .chatboxcontent")[0].scrollHeight);
-				itemsfound += 1;
-			}
 		});
 
 		chatHeartbeatCount++;
